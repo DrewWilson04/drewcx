@@ -11,7 +11,7 @@ const projects = [{
     "title": "Cryzza",
     "url": "https://cryzza.com/",
     "urlname": "Visit (Work in Progress)",
-    "image": "Cryzza.svg",
+    "image": "Cryzza.png",
     "class": "branches"
 }]
 
