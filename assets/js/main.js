@@ -45,6 +45,10 @@ var css = document.getElementById("css");
 var graph = document.getElementById("graph");
 var toggled = false
 
+var pullChain = document.getElementById("pull-chain");
+var css = document.getElementById("css");
+var toggled = false
+
 pullChain.addEventListener("click", function () {
     startTimer();
 }, false);
