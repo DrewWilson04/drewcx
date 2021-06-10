@@ -3,11 +3,17 @@ GitHubCalendar(".calendar", "drewwilson04", {
 });
 
 const projects = [{
+    "title": "Plastic Roads",
+    "url": "https://plasticroads.org/",
+    "urlname": "Visit (Work in Progress)",
+    "image": "plasticroads.png",
+    "class": "branches"
+}, {
     "title": "Rung Boards",
     "url": "https://rungboards.com",
     "image": "rung-boards.jpg",
     "class": "branches"
-},{
+}, {
     "title": "Cryzza",
     "url": "https://cryzza.com/",
     "urlname": "Visit (Work in Progress)",
