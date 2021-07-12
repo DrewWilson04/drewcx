@@ -2,7 +2,7 @@ GitHubCalendar(".calendar", "drewwilson04", {
     responsive: true
 });
 
-const projects = [{
+const projects = [/*{
     "title": "Plastic Roads",
     "url": "https://plasticroads.org/",
     "urlname": "Visit (Work in Progress)",
@@ -13,13 +13,13 @@ const projects = [{
     "url": "https://rungboards.com",
     "image": "rung-boards.jpg",
     "class": "branches"
-}, {
-    "title": "Cryzza",
-    "url": "https://cryzza.com/",
-    "urlname": "Visit (Work in Progress)",
-    "image": "Cryzza.png",
-    "class": "branches"
-}]
+},*/ {
+        "title": "Cryzza",
+        "url": "https://cryzza.com/",
+        "urlname": "Visit (Work in Progress)",
+        "image": "Cryzza.png",
+        "class": "branches"
+    }]
 
 projects.reverse()
 
