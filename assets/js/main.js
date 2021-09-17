@@ -2,7 +2,7 @@ GitHubCalendar(".calendar", "drewwilson04", {
     responsive: true
 });
 
-const projects = [/*{
+/*const projects = [{
     "title": "Plastic Roads",
     "url": "https://plasticroads.org/",
     "urlname": "Visit (Work in Progress)",
@@ -13,13 +13,13 @@ const projects = [/*{
     "url": "https://rungboards.com",
     "image": "rung-boards.jpg",
     "class": "branches"
-},*/ {
+}, {
         "title": "Cryzza",
         "url": "https://cryzza.com/",
         "urlname": "Visit (Work in Progress)",
         "image": "Cryzza.png",
         "class": "branches"
-    }]
+    }]*/
 
 projects.reverse()
 
@@ -45,11 +45,6 @@ document.getElementById("pgp_button").addEventListener('click', function () {
 })
 
 document.getElementById('pageHeight').innerText = `this page is ${document.body.scrollHeight} pixels tall`
-
-var pullChain = document.getElementById("pull-chain");
-var css = document.getElementById("css");
-var graph = document.getElementById("graph");
-var toggled = false
 
 var pullChain = document.getElementById("pull-chain");
 var css = document.getElementById("css");
