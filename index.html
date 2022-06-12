@@ -1,67 +1,341 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <meta content="Personal website for Drew Wilson" name="description">
+    <meta content="Drew Wilson" name="author">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
     <title>Drew Wilson</title>
-    <link rel="stylesheet" href="/assets/css/flexboxgrid.min.css">
-    <link rel="stylesheet" href="/assets/css/index.css">
-    <link rel="stylesheet" href="/assets/css/index.css" id="css">
-    <link rel="stylesheet" href="/assets/css/LineIcons.css">
-    <link rel="stylesheet" href="https://s.pageclip.co/v1/pageclip.css" media="screen">
-    <link rel="stylesheet" href="/assets/css/dark_graph.css">
-    <link rel="stylesheet" href="/assets/css/dark_graph.css" id="graph">
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" rel="stylesheet">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css" rel="stylesheet"><!-- Main Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/timeline.css" rel="stylesheet">
 </head>
 
-<body id="body">
-    <div id="main">
-        <div class="center">
-            <h1 class="header">
-                Drew Wilson
-            </h1>
-            <p class="links">
-                <a href="https://github.com/drewwilson04" class="link no-decor">
-                    <i class="lni lni-github-original"></i>
-                </a>
-                <a class="link no-decor" href="mailto:hi@drew.cx">
-                    <i class="lni lni-envelope"></i>
-                </a>
-                <a class="link no-decor" href="sms:9376684122">
-                    <i class="lni lni-bubble"></i>
-                </a>
-                <a class="link no-decor" href="http://instagram.com/thetrudrewwilson">
-                    <i class="lni lni-instagram-original"></i>
-                </a>
-            </p>
-            <div id="pull-chain" class="swing-chain">
-                <div class="chain"></div>
-                <div class="handle"></div>
-            </div>
-            <p class="wide-text align-left lighter">
-                I am 18 and I am from Dayton Ohio. Some things about me, I love scuba diving, skiing, cars and trucks. I
-                am a Senior in high school and am in a trade school
-                for construction carpentry and I like to code on the side.
-                I'd love to talk, you can reach me via any of the links at the top right.
-            </p> <br>
-            <img src="/images/melookingsideways.JPG" class="w-full">
-            <h1 class="header">GitHub Contributions</h1>
-            <div class="calendar">
-            </div>
-            <h1 class="header"></h1>
-            <p class="wide-text align-left lighter">
-            <div class="row" id="projects">
-            </div>
-            </p>
-            </pre>
+<body>
 
+
+
+    <section class="section-image">
+        <div class="img-overlay"></div>
+
+        <div class="intro">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Hey there</h5>
+
+
+                    <h1>I'm Drew Wilson</h1>
+
+
+
+                </div>
+                <!-- /col-md-12 -->
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="social">
+                        <!-- <a href="http://www.twitter.com/izzydoesizzy" target="_blank"><i
+                                class="fa fa-twitter fa-3x"></i></a> -->
+                        <a href="http://www.instagram.com/thetrudrewwilson" target="_blank"><i
+                                class="fa fa-instagram fa-3x"></i></a>
+                        <!-- <a href="http://www.dribbble.com/izzydoesizzy" target="_blank">
+                                  <i class="fa fa-dribbble fa-3x"></i>
+                                </a> -->
+                        <!--<a href="https://ca.linkedin.com/in/ipiyale" target="_blank"><i
+                                class="fa fa-linkedin fa-3x"></i></a>--> <a href="https://medium.com/@andrewwilson7"
+                            target="_blank"><i class="fa fa-medium fa-3x"></i></a>
+                        <a href="https://www.youtube.com/channel/UCTrdDP_75OwTo9sq1IWYZZA" target="_blank"><i
+                                class="fa fa-youtube fa-3x"></i></a> <a
+                            href="http://www.github.com/https://github.com/DrewWilson04" target="_blank"><i
+                                class="fa fa-github fa-3x"></i></a>
+                        <a href="https://unsplash.com/@drewwilson04" target="_blank"><i
+                                class="fab fa-unsplash fa-3x"></i></a>
+                    </div><!-- /social -->
+                </div><!-- /col-md-8 -->
+            </div><!-- /row -->
+
+
+
+            <div class="bottom">
+                <a href="#about">
+                    <div class="mouse-icon">
+                        <div class="scroll">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div><!-- /intro -->
+    </section>
+
+
+    <!-- ABOUT SECTION -->
+    <section class="section-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                    <img class="profilepic" src="/images/melookingsideways.JPG">
+
+                    <h2>About Me</h2>
+
+                    <hr>
+
+
+                    <p class="lead">Hey! My name is Drew, I'm 18 from Dayton Ohio. I love cars and trucks, F1, football,
+                        skiing, scuba
+                        diving, and traveling. I sometimes like to play around with coding, hence where this website
+                        came from. Check
+                        out my github account to see some projects I'm working on.</p>
+                </div>
+            </div>
         </div>
-        <script src="https://unpkg.com/github-calendar@latest/dist/github-calendar.min.js"></script>
-        <script src="/assets/js/main.js"></script>
+    </section>
 
-        <p class="wide-text align-left lighter">
-            Ukraine
-        </p> <br>
+
+
+    <section class="section-image" id="skills">
+        <div class="img-overlay"></div>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 section-heading">
+                    <h2>Skills</h2>
+
+
+                    <p class="lead">Here are some things I know how to do</p>
+
+                    <hr>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4 text-center">
+
+
+                    <h2>Carpentry</h2>
+
+
+                    <p>I went to a career tech school for construction carpentry and graduated with honours. I worked as
+                        an apprentice for a home remodeling company for close to a year. I have OSHA
+                        10 in General Industry and Construction, I am also NCCER Certified. </p>
+                </div>
+
+
+                <div class="col-md-4 text-center">
+
+
+                    <h2>Coding</h2>
+
+
+                    <p>I don't know much, but the little I do know, I try to put it to use, by making websites like
+                        this, or other sites you can find on my github account. </p>
+                </div>
+
+
+                <div class="col-md-4 text-center">
+
+                    <h2>Skiing</h2>
+
+
+                    <p>Not exactly a life skill, but hey if you need a skiing carpenter, I'm your guy. I mainly ski at
+                        Perfect North Slopes in Indiana, but have been able to ski their black diamonds and am new to
+                        their park.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!--<section class="section-primary" id="timelinesection">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 section-heading">
+                    <h2>Things I've done</h2>
+
+
+                    <p class="lead">Here are a few cool things about me</p>
+
+                    <hr class="white">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                  
+
+
+                    <div id="timeline">
+                        
+
+
+                        <div class="timeline-item">
+                           
+
+
+                            <div class="timeline-icon">
+                                <i class="fa fa-star"></i>
+                            </div>
+                           
+
+
+                            <div class="timeline-content right">
+                                <h2>This Happened</h2>
+
+
+                                <p>Lorem ipsum dolor sit amet, consectetur
+                                    adipisicing elit. Atque, facilis quo maiores
+                                    magnam modi ab libero praesentium
+                                    blanditiis.</p>
+                            </div>
+                        </div>
+                       
+
+
+                        <div class="timeline-item">
+                            
+
+
+                            <div class="timeline-icon">
+                                <i class="fa fa-cog"></i>
+                            </div>
+                            
+
+
+                            <div class="timeline-content left">
+                                <h2>This Happened</h2>
+
+
+                                <p>Lorem ipsum dolor sit amet, consectetur
+                                    adipisicing elit. Atque, facilis quo maiores
+                                    magnam modi ab libero praesentium
+                                    blanditiis.</p>
+                            </div>
+                        </div>
+                        
+
+                        <div class="timeline-item">
+                           
+
+                            <div class="timeline-icon">
+                                <i class="fa fa-plane"></i>
+                            </div>
+                           
+
+                            <div class="timeline-content right">
+                                <h2>This Happened</h2>
+
+
+                                <p>Lorem ipsum dolor sit amet, consectetur
+                                    adipisicing elit. Atque, facilis quo maiores
+                                    magnam modi ab libero praesentium
+                                    blanditiis.</p>
+                            </div>
+                        </div>
+                      
+
+                        <div class="timeline-item">
+                          
+
+                            <div class="timeline-icon">
+                                <i class="fa fa-group"></i>
+                            </div>
+                           
+                            <div class="timeline-content left">
+                                <h2>This Happened</h2>
+
+
+                                <p>Lorem ipsum dolor sit amet, consectetur
+                                    adipisicing elit. Atque, facilis quo maiores
+                                    magnam modi ab libero praesentium
+                                    blanditiis.</p>
+                            </div>
+                        </div>
+                       
+
+                        <div class="timeline-item">
+                        
+                            <div class="timeline-icon">
+                                <i class="fa fa-star"></i>
+                            </div>
+                          
+
+                            <div class="timeline-content right">
+                                <h2>This Happened</h2>
+
+
+                                <p>Lorem ipsum dolor sit amet, consectetur
+                                    adipisicing elit. Atque, facilis quo maiores
+                                    magnam modi ab libero praesentium
+                                    blanditiis.</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                  
+                </div>
+                
+            </div>
+        </div> 
+    </section>-->
+    <!-- FOOTER SECTION -->
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <p> <a target="_blank">drew.cx</a>
+                    </p>
+                </div>
+
+
+                <div class="col-md-4 text-center">
+                    <p>
+                        <a target="_blank">Drew Wilson © 2020 - 2022</a>
+                    </p>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="social-footer">
+                        <!-- <a href="http://www.twitter.com/izzydoesizzy" target="_blank"><i class="fa fa-twitter"></i></a>-->
+                        <a href="http://www.instagram.com/thetrudrewwilson" target="_blank"><i
+                                class="fa fa-instagram"></i></a>
+                        <!--<a href="https://ca.linkedin.com/in/ipiyale"
+                            target="_blank"><i class="fa fa-linkedin"></i></a>--> <a
+                            href="https://www.youtube.com/channel/UCTrdDP_75OwTo9sq1IWYZZA" target="_blank"><i
+                                class="fa fa-youtube"></i></a> <a href="http://www.github.com/drewwilson04"
+                            target="_blank"><i class="fa fa-github"></i></a>
+                    </div> <!-- /social footer -->
+                </div> <!-- /col-md-4 -->
+            </div><!-- /row -->
+        </div><!-- /container -->
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+    </script>
+    <script>
+        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+    </script>
+    <script src="js/bootstrap.min.js">
+    </script>
+    <script src="js/scripts.js">
+    </script>
+    <script src="https://kit.fontawesome.com/97a570d87f.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
