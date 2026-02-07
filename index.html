@@ -1,53 +1,696 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drew Wilson</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root {
+  --green: #2D5F3E;
+  --green-light: #4A8B62;
+  --green-dark: #1E4230;
+  --cream: #FDF6EC;
+  --charcoal: #2C2C2C;
+  --white: #FFFFFF;
+}
 
-    <meta content="Personal website for Drew Wilson" name="description">
-    <meta content="Drew Wilson" name="author">
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
-    <title>Drew Wilson</title>
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" rel="stylesheet">
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  overflow-x: hidden;
+}
 
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 1000;
+  padding: 1.2rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(253,246,236,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(45,95,62,0.1);
+  transition: all 0.3s ease;
+}
+nav.scrolled { padding: 0.8rem 3rem; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
 
-    <link href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css" rel="stylesheet"><!-- Main Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/timeline.css" rel="stylesheet">
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--charcoal); letter-spacing: -0.02em;
+}
+
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  text-decoration: none; color: var(--charcoal);
+  font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  position: relative; transition: color 0.3s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px; background: var(--green);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--green); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; background: none; border: none; padding: 4px;
+}
+.nav-hamburger span { width: 24px; height: 2px; background: var(--charcoal); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 55vh;
+  display: flex; align-items: flex-start;
+  padding: 9rem 3rem 3rem;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -20%; right: -10%;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(45,95,62,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+.hero-text { animation: fadeInUp 1s ease; }
+
+.hero-greeting {
+  font-size: 0.9rem; font-weight: 500;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 1rem;
+}
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5rem; font-weight: 700;
+  line-height: 1.05; margin-bottom: 1.5rem;
+  letter-spacing: -0.03em; color: var(--charcoal);
+}
+.hero-name span { display: block; color: var(--green); }
+.hero-bio {
+  font-size: 1.1rem; line-height: 1.7; color: #666;
+  max-width: 560px; margin-bottom: 2rem; font-weight: 300;
+}
+.hero-stats { display: flex; gap: 2.5rem; margin-top: 2rem; }
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 700; color: var(--green);
+}
+.stat-label {
+  font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #999; margin-top: 0.2rem;
+}
+
+/* ── SHARED SECTION STYLES ── */
+section { padding: 6rem 3rem; max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 0.8rem;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem; font-weight: 700;
+  letter-spacing: -0.02em; margin-bottom: 1rem;
+}
+.section-subtitle {
+  font-size: 1rem; color: #888;
+  max-width: 500px; line-height: 1.6; font-weight: 300;
+}
+
+/* ── ABOUT ── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; margin-top: 3rem; align-items: start;
+}
+.about-text p {
+  font-size: 1.05rem; line-height: 1.8;
+  color: #555; margin-bottom: 1.2rem; font-weight: 300;
+}
+.about-details { display: flex; gap: 1.5rem; }
+.about-detail {
+  padding: 1.5rem; background: var(--white);
+  border-radius: 16px; border: 1px solid rgba(45,95,62,0.1);
+  transition: transform 0.3s, box-shadow 0.3s; flex: 1;
+}
+.about-detail:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(45,95,62,0.1);
+}
+.about-detail-label {
+  font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #aaa; margin-bottom: 0.3rem;
+}
+.about-detail-value { font-weight: 600; font-size: 0.95rem; }
+
+/* ── PHOTOGRAPHY ── */
+#photography { max-width: 100%; padding: 6rem 3rem; }
+#photography .section-header { max-width: 1200px; margin: 0 auto 3rem; }
+
+.photo-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem;
+}
+.photo-item {
+  border-radius: 16px; overflow: hidden;
+  position: relative; cursor: pointer; aspect-ratio: 4/3;
+}
+.photo-item img {
+  width: 100%; height: 100%;
+  object-fit: cover; transition: transform 0.6s ease;
+}
+.photo-item:hover img { transform: scale(1.05); }
+
+.unsplash-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  margin-top: 2rem; padding: 0.8rem 1.5rem;
+  background: var(--green); color: var(--white);
+  text-decoration: none; border-radius: 50px;
+  font-size: 0.85rem; font-weight: 600; transition: background 0.3s;
+}
+.unsplash-link:hover { background: var(--green-dark); }
+
+/* ── SKILLS ── */
+.skills-section {
+  background: var(--white); border-radius: 24px;
+  padding: 3rem; margin-top: 3rem;
+  border: 1px solid rgba(45,95,62,0.08);
+}
+.skills-toggle-group { display: flex; gap: 0.8rem; margin-bottom: 2rem; }
+.skills-toggle {
+  padding: 0.7rem 1.5rem; border: 2px solid var(--green);
+  border-radius: 50px; background: transparent; color: var(--green);
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+  font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+}
+.skills-toggle.active, .skills-toggle:hover {
+  background: var(--green); color: var(--white);
+}
+.skills-content { display: none; }
+.skills-content.active { display: block; }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.skill-card {
+  padding: 1.2rem 1.5rem; background: var(--cream);
+  border-radius: 12px; display: flex; align-items: center;
+  gap: 0.8rem; transition: transform 0.3s, box-shadow 0.3s;
+}
+.skill-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(45,95,62,0.1);
+}
+.skill-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%; background: var(--green); flex-shrink: 0;
+}
+.skill-name { font-weight: 500; font-size: 0.9rem; }
+
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.cert-card {
+  padding: 1.5rem; background: var(--cream);
+  border-radius: 12px; display: flex;
+  align-items: flex-start; gap: 1rem; transition: transform 0.3s;
+}
+.cert-card:hover { transform: translateY(-3px); }
+.cert-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--green); display: flex;
+  align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 0.65rem; flex-shrink: 0;
+}
+.cert-info h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+.cert-info p { font-size: 0.8rem; color: #888; }
+
+/* ── MAP ── */
+#travel { max-width: 100%; padding: 6rem 3rem; }
+#travel .section-header { max-width: 1200px; margin: 0 auto 3rem; }
+
+.map-container {
+  max-width: 1200px; margin: 0 auto;
+  background: var(--white); border-radius: 24px;
+  padding: 2rem; border: 1px solid rgba(45,95,62,0.08);
+  overflow: hidden;
+}
+#leafletMap { width: 100%; height: 500px; border-radius: 16px; z-index: 1; }
+
+.country-count {
+  text-align: center; margin-top: 1.5rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: var(--charcoal);
+}
+.country-count span { color: var(--green); font-size: 1.8rem; font-weight: 700; }
+
+.travel-list {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+  justify-content: center; margin-top: 1.5rem;
+  max-width: 800px; margin-left: auto; margin-right: auto;
+}
+.travel-tag {
+  padding: 0.4rem 1rem;
+  background: rgba(45,95,62,0.1);
+  color: var(--green-dark); border-radius: 50px;
+  font-size: 0.78rem; font-weight: 500;
+}
+
+/* ── CONTACT ── */
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; margin-top: 3rem;
+}
+.contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+.contact-item {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.2rem 1.5rem; background: var(--white);
+  border-radius: 16px; border: 1px solid rgba(45,95,62,0.08);
+  text-decoration: none; color: var(--charcoal);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.contact-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(45,95,62,0.12);
+}
+.contact-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(45,95,62,0.1); display: flex;
+  align-items: center; justify-content: center;
+  color: var(--green); font-size: 0.85rem;
+  font-weight: 700; flex-shrink: 0;
+}
+.contact-label {
+  font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #aaa;
+}
+.contact-value { font-weight: 500; font-size: 0.95rem; }
+
+.contact-socials { display: flex; flex-direction: column; gap: 1rem; }
+.social-link {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.5rem; background: var(--white); border-radius: 16px;
+  border: 1px solid rgba(45,95,62,0.08);
+  text-decoration: none; color: var(--charcoal);
+  transition: all 0.3s ease;
+}
+.social-link:hover {
+  background: var(--green); color: var(--white);
+  transform: translateY(-3px);
+}
+.social-link:hover .social-handle { color: rgba(255,255,255,0.7); }
+.social-name { font-weight: 600; font-size: 0.95rem; }
+.social-handle { font-size: 0.8rem; color: #aaa; transition: color 0.3s; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center; padding: 3rem;
+  color: #aaa; font-size: 0.8rem;
+  border-top: 1px solid rgba(45,95,62,0.1);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+  opacity: 0; transform: translateY(25px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── LEAFLET POPUP ── */
+.leaflet-popup-content-wrapper {
+  border-radius: 10px !important;
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--cream); padding: 1.5rem; gap: 1rem;
+    border-bottom: 1px solid rgba(45,95,62,0.1);
+  }
+  .hero { padding: 8rem 1.5rem 3rem; }
+  .hero-name { font-size: 3rem; }
+  .about-grid { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  section, #photography, #travel { padding: 4rem 1.5rem; }
+  .section-title { font-size: 2rem; }
+  .skills-section { padding: 2rem 1.5rem; }
+  .map-container { padding: 1rem; }
+  #leafletMap { height: 350px; }
+}
+@media (max-width: 600px) {
+  .hero-name { font-size: 2.4rem; }
+  .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+  .about-details { flex-direction: column; }
+  .photo-grid { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .certs-grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
-
 <body>
 
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">DW.</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#travel">Travel</a></li>
+    <li><a href="#photography">Photos</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-
-    <div class="span12">
-         <div class="col-md-6 no-gutter text-center fill">
-            <h2 class="vcenter">Drew Wilson</h2> <br>
-            <h5 class="vcenter">phone: +1 (937) 668-4122 <br>
-            personal email: drewwilson2022@gmail.com <br> work email: drewwilson@owcgroup.com <br> instagram: @thetrudrewwilson <br> </h5>
-         </div> 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-greeting">Hello, I'm</div>
+      <h1 class="hero-name">Drew<span>Wilson</span></h1>
+      <p class="hero-bio">22 year old based in Tipp City, Ohio.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-number">30+</div>
+          <div class="stat-label">Countries Visited</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">22</div>
+          <div class="stat-label">Years Old</div>
+        </div>
       </div>
-      <div style="clear:both;"></div>
-      <script src="js/jquery.js"></script>
-      <script src="js/bootstrap.min.js"></script>
-      <script src="js/menu-color.js"></script>
-      <script src="js/modernizr.js"></script>
-      <script src="js/script.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
-    </script>
-    <script>
-        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
-    </script>
-    <script src="js/bootstrap.min.js">
-    </script>
-    <script src="js/scripts.js">
-    </script>
-    <script src="https://kit.fontawesome.com/97a570d87f.js" crossorigin="anonymous"></script>
-</body>
+    </div>
+  </div>
+</section>
 
+<!-- ABOUT -->
+<section id="about">
+  <div class="fade-in">
+    <div class="section-label">About Me</div>
+    <h2 class="section-title">A Little Background</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text fade-in">
+      <p>I'm Drew Wilson, born and raised in Ohio. At 22, I've traveled to over 30 countries across the Americas, Caribbean, and Europe. I have seven years experience with OutShine Window Cleaning and have skills in construction as well. I enjoy watching College Football, Formula 1 and playing golf. </p>
+<p></p>    </div>
+    <div class="about-details fade-in">
+      <div class="about-detail">
+        <div class="about-detail-label">Location</div>
+        <div class="about-detail-value">Tipp City, OH</div>
+      </div>
+      <div class="about-detail">
+        <div class="about-detail-label">Age</div>
+        <div class="about-detail-value">22 Years Old</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAVEL -->
+<section id="travel">
+  <div class="section-header fade-in">
+    <div class="section-label">Travel</div>
+    <h2 class="section-title">Where I've Been</h2>
+    <p class="section-subtitle">Exploring the world one country at a time.</p>
+  </div>
+  <div class="map-container fade-in">
+    <div id="leafletMap"></div>
+    <div class="country-count">
+      <span>31</span> countries & territories visited
+    </div>
+    <div class="travel-list" id="travelList"></div>
+  </div>
+</section>
+
+<!-- PHOTOGRAPHY -->
+<section id="photography">
+  <div class="section-header fade-in">
+    <div class="section-label">Photography</div>
+    <h2 class="section-title">Through My Lens</h2>
+    <p class="section-subtitle">Moments captured from around the world.</p>
+  </div>
+  <div class="photo-grid">
+    <div class="photo-item fade-in">
+      <img src="https://unsplash.com/photos/KYHfJbBr5qc/download?force=true&w=800" alt="Photo by Drew Wilson" loading="lazy">
+    </div>
+    <div class="photo-item fade-in">
+      <img src="https://unsplash.com/photos/iaW5otlXKMc/download?force=true&w=800" alt="Photo by Drew Wilson" loading="lazy">
+    </div>
+    <div class="photo-item fade-in">
+      <img src="https://unsplash.com/photos/mdoOkBDltXI/download?force=true&w=800" alt="Photo by Drew Wilson" loading="lazy">
+    </div>
+    <div class="photo-item fade-in">
+      <img src="https://unsplash.com/photos/vdVwOcYpS60/download?force=true&w=800" alt="Photo by Drew Wilson" loading="lazy">
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;">
+    <a href="https://unsplash.com/@drewwilson2022" target="_blank" class="unsplash-link">
+      View more on Unsplash &rarr;
+    </a>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="fade-in">
+    <div class="section-label">Skills & Certifications</div>
+    <h2 class="section-title">What I Bring to the Table</h2>
+    <p class="section-subtitle">A diverse and growing skillset.</p>
+  </div>
+  <div class="skills-section fade-in">
+    <div class="skills-toggle-group">
+      <button class="skills-toggle active" onclick="showTab('skills-tab', this)">Skills</button>
+      <button class="skills-toggle" onclick="showTab('certs-tab', this)">Certifications</button>
+    </div>
+    <div id="skills-tab" class="skills-content active">
+      <div class="skills-grid">
+        <div class="skill-card"><div class="skill-dot"></div><span class="skill-name">Window Cleaning</span></div>
+        <div class="skill-card"><div class="skill-dot"></div><span class="skill-name">Framing</span></div>
+        <div class="skill-card"><div class="skill-dot"></div><span class="skill-name">Roofing</span></div>
+        <div class="skill-card"><div class="skill-dot"></div><span class="skill-name">Siding Installation</span></div>
+        <div class="skill-card"><div class="skill-dot"></div><span class="skill-name">Finish Carpentry</span></div>
+        <div class="skill-card"><div class="skill-dot"></div><span class="skill-name">Rough Carpentry</span></div>
+        <div class="skill-card"><div class="skill-dot"></div><span class="skill-name">Concrete Work</span></div>
+        <div class="skill-card"><div class="skill-dot"></div><span class="skill-name">Lawn Care & Maintenance</span></div>
+      </div>
+    </div>
+    <div id="certs-tab" class="skills-content">
+      <div class="certs-grid">
+        <div class="cert-card">
+          <div class="cert-icon">OSHA</div>
+          <div class="cert-info">
+            <h4>OSHA 10 — General Industry</h4>
+            <p>Occupational Safety & Health Administration</p>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">OSHA</div>
+          <div class="cert-info">
+            <h4>OSHA 10 — Construction</h4>
+            <p>Occupational Safety & Health Administration</p>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">NCCER</div>
+          <div class="cert-info">
+            <h4>NCCER Core — Level 1</h4>
+            <p>National Center for Construction Education & Research</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="fade-in">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Let's Connect</h2>
+    <p class="section-subtitle">Whether it's business or just saying hello.</p>
+  </div>
+  <div class="contact-grid fade-in">
+    <div class="contact-info">
+      <a href="tel:+19376684122" class="contact-item">
+        <div class="contact-icon">TEL</div>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-value">(937) 668-4122</div>
+        </div>
+      </a>
+      <a href="mailto:drewwilson2022@gmail.com" class="contact-item">
+        <div class="contact-icon">@</div>
+        <div>
+          <div class="contact-label">Personal Email</div>
+          <div class="contact-value">drewwilson2022@gmail.com</div>
+        </div>
+      </a>
+      <a href="mailto:drewwilson@owcgroup.com" class="contact-item">
+        <div class="contact-icon">BIZ</div>
+        <div>
+          <div class="contact-label">Work Email</div>
+          <div class="contact-value">drewwilson@owcgroup.com</div>
+        </div>
+      </a>
+    </div>
+    <div class="contact-socials">
+      <a href="https://www.linkedin.com/in/drewwilson22/" target="_blank" class="social-link">
+        <div class="contact-icon">in</div>
+        <div>
+          <div class="social-name">LinkedIn</div>
+          <div class="social-handle">@drewwilson22</div>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/thetrudrewwilson/" target="_blank" class="social-link">
+        <div class="contact-icon">IG</div>
+        <div>
+          <div class="social-name">Instagram</div>
+          <div class="social-handle">@thetrudrewwilson</div>
+        </div>
+      </a>
+      <a href="https://unsplash.com/@drewwilson2022" target="_blank" class="social-link">
+        <div class="contact-icon">UN</div>
+        <div>
+          <div class="social-name">Unsplash</div>
+          <div class="social-handle">@drewwilson2022</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Drew Wilson. All rights reserved.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// NAV SCROLL
+window.addEventListener('scroll', function() {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// TABS
+function showTab(tabId, btn) {
+  document.querySelectorAll('.skills-content').forEach(function(c) { c.classList.remove('active'); });
+  document.querySelectorAll('.skills-toggle').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// SCROLL ANIMATIONS
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+
+// TRAVEL TAGS
+var visitedCountries = [
+  'United States', 'Bahamas', 'Barbados', 'Canada', 'Dominica',
+  'Dominican Republic', 'Grenada', 'Haiti', 'Honduras', 'Jamaica',
+  'Mexico', 'Panama', 'Saint Lucia', 'Puerto Rico', 'U.S. Virgin Islands',
+  'Ecuador', 'Belgium', 'Croatia', 'France', 'Saint Martin',
+  'Sint Maarten', 'Greece', 'Italy', 'Portugal', 'Spain',
+  'Switzerland', 'United Kingdom', 'Gibraltar', 'Turks and Caicos Islands',
+  'Vatican City'
+];
+
+var travelList = document.getElementById('travelList');
+visitedCountries.forEach(function(c) {
+  var tag = document.createElement('span');
+  tag.className = 'travel-tag';
+  tag.textContent = c;
+  travelList.appendChild(tag);
+});
+
+// LEAFLET MAP
+var locations = [
+  { lat: 38.9, lng: -77.0, label: 'United States' },
+  { lat: 25.0, lng: -77.4, label: 'Bahamas' },
+  { lat: 13.1, lng: -59.6, label: 'Barbados' },
+  { lat: 45.4, lng: -75.7, label: 'Canada' },
+  { lat: 15.3, lng: -61.4, label: 'Dominica' },
+  { lat: 18.5, lng: -69.9, label: 'Dominican Republic' },
+  { lat: 12.1, lng: -61.7, label: 'Grenada' },
+  { lat: 18.5, lng: -72.3, label: 'Haiti' },
+  { lat: 14.1, lng: -87.2, label: 'Honduras' },
+  { lat: 18.1, lng: -77.3, label: 'Jamaica' },
+  { lat: 19.4, lng: -99.1, label: 'Mexico' },
+  { lat: 9.0, lng: -79.5, label: 'Panama' },
+  { lat: 14.0, lng: -61.0, label: 'Saint Lucia' },
+  { lat: 18.5, lng: -66.1, label: 'Puerto Rico' },
+  { lat: 18.3, lng: -64.9, label: 'U.S. Virgin Islands' },
+  { lat: -0.2, lng: -78.5, label: 'Ecuador' },
+  { lat: 50.8, lng: 4.4, label: 'Belgium' },
+  { lat: 45.8, lng: 16.0, label: 'Croatia' },
+  { lat: 48.9, lng: 2.3, label: 'France' },
+  { lat: 18.07, lng: -63.05, label: 'Saint Martin' },
+  { lat: 18.04, lng: -63.07, label: 'Sint Maarten' },
+  { lat: 37.9, lng: 23.7, label: 'Greece' },
+  { lat: 41.9, lng: 12.5, label: 'Italy' },
+  { lat: 38.7, lng: -9.1, label: 'Portugal' },
+  { lat: 40.4, lng: -3.7, label: 'Spain' },
+  { lat: 46.9, lng: 7.4, label: 'Switzerland' },
+  { lat: 51.5, lng: -0.1, label: 'United Kingdom' },
+  { lat: 36.14, lng: -5.35, label: 'Gibraltar' },
+  { lat: 21.8, lng: -71.8, label: 'Turks & Caicos' },
+  { lat: 41.902, lng: 12.453, label: 'Vatican City' }
+];
+
+var map = L.map('leafletMap', {
+  center: [30, -20],
+  zoom: 3,
+  minZoom: 2,
+  maxZoom: 12,
+  scrollWheelZoom: true,
+  zoomControl: true
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+
+var greenIcon = L.divIcon({
+  className: 'custom-marker',
+  html: '<div style="width:14px;height:14px;background:#2D5F3E;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(45,95,62,0.5);"></div>',
+  iconSize: [14, 14],
+  iconAnchor: [7, 7],
+  popupAnchor: [0, -10]
+});
+
+locations.forEach(function(loc) {
+  L.marker([loc.lat, loc.lng], { icon: greenIcon })
+    .addTo(map)
+    .bindPopup('<strong style="font-family:DM Sans,sans-serif;font-size:13px;">' + loc.label + '</strong>');
+});
+</script>
+
+</body>
 </html>
