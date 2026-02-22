@@ -11,9 +11,8 @@
 
 - { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-
-a { color: inherit !important; text-decoration: none !important; }
-button { font-family: ‘DM Sans’, sans-serif; }
+  a { color: inherit !important; text-decoration: none !important; }
+  button { font-family: ‘DM Sans’, sans-serif; }
 
 body {
 font-family: ‘DM Sans’, sans-serif;
@@ -27,7 +26,7 @@ nav {
 position: fixed; top: 0; width: 100%; z-index: 1000;
 padding: 1.2rem 3rem;
 display: flex; justify-content: space-between; align-items: center;
-background: rgba(253,246,236,0.85) !important;
+background: rgba(253,246,236,0.95) !important;
 backdrop-filter: blur(16px);
 border-bottom: 1px solid rgba(45,95,62,0.1);
 transition: all 0.3s ease;
@@ -37,7 +36,7 @@ nav.scrolled { padding: 0.8rem 3rem; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
 .nav-logo {
 font-family: ‘Playfair Display’, serif;
 font-size: 1.4rem; font-weight: 700;
-color: #2C2C2C !important; letter-spacing: -0.02em;
+color: #2D5F3E !important; letter-spacing: -0.02em;
 }
 
 .nav-links { display: flex; gap: 2rem; list-style: none; }
@@ -57,15 +56,19 @@ transition: width 0.3s ease;
 
 .nav-hamburger {
 display: none; flex-direction: column; gap: 5px;
-cursor: pointer; background: none; border: none; padding: 4px;
+cursor: pointer; background: none !important; border: none;
+padding: 4px; -webkit-appearance: none; appearance: none;
 }
-.nav-hamburger span { width: 24px; height: 2px; background: #2C2C2C; }
+.nav-hamburger span {
+display: block; width: 24px; height: 2px;
+background-color: #2D5F3E !important; border-radius: 2px;
+}
 
 /* ── HERO ── */
 .hero {
-min-height: 55vh;
+min-height: 45vh;
 display: flex; align-items: flex-start;
-padding: 9rem 3rem 3rem;
+padding: 8rem 3rem 1rem;
 position: relative; overflow: hidden;
 background-color: #FDF6EC;
 }
@@ -92,9 +95,9 @@ letter-spacing: -0.03em; color: #2C2C2C !important;
 .hero-name span { display: block; color: #2D5F3E !important; }
 .hero-bio {
 font-size: 1.1rem; line-height: 1.7; color: #666666 !important;
-max-width: 560px; margin-bottom: 2rem; font-weight: 300;
+max-width: 560px; margin-bottom: 1.5rem; font-weight: 300;
 }
-.hero-stats { display: flex; gap: 2.5rem; margin-top: 2rem; }
+.hero-stats { display: flex; gap: 2.5rem; margin-top: 1.5rem; }
 .stat-number {
 font-family: ‘Playfair Display’, serif;
 font-size: 2.2rem; font-weight: 700; color: #2D5F3E !important;
@@ -105,7 +108,7 @@ letter-spacing: 0.1em; color: #999999 !important; margin-top: 0.2rem;
 }
 
 /* ── SHARED SECTION STYLES ── */
-section { padding: 6rem 3rem; max-width: 1200px; margin: 0 auto; background-color: #FDF6EC; }
+section { padding: 4rem 3rem; max-width: 1200px; margin: 0 auto; background-color: #FDF6EC; }
 .section-label {
 font-size: 0.8rem; font-weight: 600;
 letter-spacing: 0.15em; text-transform: uppercase;
@@ -148,7 +151,7 @@ letter-spacing: 0.1em; color: #aaaaaa !important; margin-bottom: 0.3rem;
 .about-detail-value { font-weight: 600; font-size: 0.95rem; color: #2C2C2C !important; }
 
 /* ── PHOTOGRAPHY ── */
-#photography { max-width: 100%; padding: 6rem 3rem; background-color: #FDF6EC; }
+#photography { max-width: 100%; padding: 4rem 3rem; background-color: #FDF6EC; }
 #photography .section-header { max-width: 1200px; margin: 0 auto 3rem; }
 
 .photo-grid {
@@ -190,8 +193,7 @@ color: #2D5F3E !important;
 font-family: ‘DM Sans’, sans-serif;
 font-size: 0.85rem; font-weight: 600;
 cursor: pointer; transition: all 0.3s ease;
--webkit-appearance: none;
-appearance: none;
+-webkit-appearance: none; appearance: none;
 }
 .skills-toggle.active {
 background-color: #2D5F3E !important;
@@ -245,7 +247,7 @@ color: #FFFFFF !important; font-weight: 700; font-size: 0.65rem; flex-shrink: 0;
 .cert-info p { font-size: 0.8rem; color: #888888 !important; }
 
 /* ── MAP ── */
-#travel { max-width: 100%; padding: 6rem 3rem; background-color: #FDF6EC; }
+#travel { max-width: 100%; padding: 4rem 3rem; background-color: #FDF6EC; }
 #travel .section-header { max-width: 1200px; margin: 0 auto 3rem; }
 
 .map-container {
@@ -359,12 +361,12 @@ position: absolute; top: 100%; left: 0; right: 0;
 background: #FDF6EC; padding: 1.5rem; gap: 1rem;
 border-bottom: 1px solid rgba(45,95,62,0.1);
 }
-.hero { padding: 8rem 1.5rem 3rem; }
+.hero { padding: 7rem 1.5rem 1rem; }
 .hero-name { font-size: 3rem; }
 .about-grid { grid-template-columns: 1fr; }
 .photo-grid { grid-template-columns: 1fr 1fr; }
 .contact-grid { grid-template-columns: 1fr; }
-section, #photography, #travel { padding: 4rem 1.5rem; }
+section, #photography, #travel { padding: 3rem 1.5rem; }
 .section-title { font-size: 2rem; }
 .skills-section { padding: 2rem 1.5rem; }
 .map-container { padding: 1rem; }
@@ -430,7 +432,7 @@ section, #photography, #travel { padding: 4rem 1.5rem; }
   </div>
   <div class="about-grid">
     <div class="about-text fade-in">
-      <p>I'm Drew Wilson, born and raised in Ohio. At 22, I've traveled to over 30 countries across the Americas, Caribbean, and Europe. I have seven years experience with OutShine Window Cleaning and have skills in construction as well. I enjoy watching College Football, Formula 1 and playing golf. </p>
+      <p>I'm Drew Wilson, born and raised in Ohio. At 22, I've traveled to over 30 countries across the Americas, Caribbean, and Europe. I have seven years experience with OutShine Window Cleaning and have skills in construction as well. I enjoy watching College Football, Formula 1 and playing golf.</p>
     </div>
     <div class="about-details fade-in">
       <div class="about-detail">
