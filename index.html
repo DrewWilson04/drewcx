@@ -273,6 +273,25 @@ display: flex; flex-wrap: wrap; gap: 0.5rem;
 justify-content: center; margin-top: 1.5rem;
 max-width: 800px; margin-left: auto; margin-right: auto;
 }
+.travel-toggle-group {
+display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem;
+}
+.travel-toggle {
+padding: 0.45rem 1.1rem;
+border: 2px solid #2D5F3E !important;
+border-radius: 50px;
+background-color: transparent !important;
+color: #2D5F3E !important;
+font-size: 0.78rem; font-weight: 600;
+cursor: pointer; transition: all 0.3s ease;
+-webkit-appearance: none; appearance: none;
+}
+.travel-toggle.active, .travel-toggle:hover {
+background-color: #2D5F3E !important;
+color: #FFFFFF !important;
+}
+.travel-tab { display: none; }
+.travel-tab.active { display: block; }
 .travel-tag {
 padding: 0.4rem 1rem;
 background: rgba(45,95,62,0.1);
@@ -473,10 +492,22 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
   </div>
   <div class="map-container fade-in">
     <div id="leafletMap"></div>
-    <div class="country-count">
-      <span>31</span> countries & territories visited
+    <div class="travel-toggle-group">
+      <button class="travel-toggle active" onclick="showTravelTab('countries', this)">Countries</button>
+      <button class="travel-toggle" onclick="showTravelTab('states', this)">US States</button>
     </div>
-    <div class="travel-list" id="travelList"></div>
+    <div class="travel-tab active" id="travel-countries">
+      <div class="country-count">
+        <span>31</span> countries & territories visited
+      </div>
+      <div class="travel-list" id="travelList"></div>
+    </div>
+    <div class="travel-tab" id="travel-states">
+      <div class="country-count">
+        <span id="stateCount"></span> US states visited, plus D.C.
+      </div>
+      <div class="travel-list" id="stateList"></div>
+    </div>
   </div>
 </section>
 
@@ -659,13 +690,34 @@ var visitedCountries = [
   'Vatican City'
 ];
 
-var travelList = document.getElementById('travelList');
-visitedCountries.forEach(function(c) {
-  var tag = document.createElement('span');
-  tag.className = 'travel-tag';
-  tag.textContent = c;
-  travelList.appendChild(tag);
-});
+var visitedStates = [
+  'Alabama', 'Alaska', 'Arizona', 'Connecticut', 'Florida',
+  'Georgia', 'Illinois', 'Indiana', 'Kentucky', 'Maryland',
+  'Massachusetts', 'Michigan', 'Minnesota', 'Nevada', 'New Jersey',
+  'New York', 'Ohio', 'Oregon', 'Pennsylvania', 'South Carolina',
+  'Tennessee', 'Texas', 'Utah', 'Virginia', 'Washington',
+  'West Virginia', 'Wisconsin'
+];
+
+function renderTags(listId, items) {
+  var list = document.getElementById(listId);
+  items.forEach(function(c) {
+    var tag = document.createElement('span');
+    tag.className = 'travel-tag';
+    tag.textContent = c;
+    list.appendChild(tag);
+  });
+}
+renderTags('travelList', visitedCountries);
+renderTags('stateList', visitedStates.concat(['Washington D.C.']));
+document.getElementById('stateCount').textContent = visitedStates.length;
+
+function showTravelTab(tab, btn) {
+  document.querySelectorAll('.travel-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.travel-toggle').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('travel-' + tab).classList.add('active');
+  btn.classList.add('active');
+}
 
 // LEAFLET MAP
 var locations = [
@@ -712,6 +764,7 @@ var locations = [
   { lat: 40.3,  lng: -86.1,   label: 'Indiana' },
   { lat: 37.5,  lng: -85.3,   label: 'Kentucky' },
   { lat: 39.0,  lng: -76.8,   label: 'Maryland' },
+  { lat: 42.4,  lng: -71.4,   label: 'Massachusetts' },
   { lat: 44.3,  lng: -85.4,   label: 'Michigan' },
   { lat: 46.4,  lng: -93.1,   label: 'Minnesota' },
   { lat: 39.5,  lng: -116.4,  label: 'Nevada' },
