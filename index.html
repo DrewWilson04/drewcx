@@ -246,6 +246,8 @@ color: #FFFFFF !important; font-weight: 700; font-size: 0.65rem; flex-shrink: 0;
 .cert-info h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; color: #2C2C2C !important; }
 .cert-info p { font-size: 0.8rem; color: #888888 !important; }
 
+.working-on-text { max-width: 800px; margin-top: 2rem; }
+
 /* ── MAP ── */
 #travel { max-width: 100%; padding: 4rem 3rem; background-color: #FDF6EC; }
 #travel .section-header { max-width: 1200px; margin: 0 auto 3rem; }
@@ -257,6 +259,7 @@ padding: 2rem; border: 1px solid rgba(45,95,62,0.08);
 overflow: hidden;
 }
 #leafletMap { width: 100%; height: 500px; border-radius: 16px; z-index: 1; }
+#leafletMap .leaflet-tile-pane { filter: grayscale(0.85) brightness(1.05) contrast(0.9); }
 
 .country-count {
 text-align: center; margin-top: 1.5rem;
@@ -391,6 +394,7 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
   <div class="nav-logo">DW.</div>
   <ul class="nav-links" id="navLinks">
     <li><a href="#about">About</a></li>
+    <li><a href="#working-on">Working On</a></li>
     <li><a href="#travel">Travel</a></li>
     <li><a href="#photography">Photos</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -444,6 +448,18 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
         <div class="about-detail-value">22 Years Old</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- WORKING ON -->
+
+<section id="working-on">
+  <div class="fade-in">
+    <div class="section-label">Current Projects</div>
+    <h2 class="section-title">What I'm Working On</h2>
+  </div>
+  <div class="about-text working-on-text fade-in">
+    <p>I am working on many different things across a variety of areas. I am currently working on getting my private pilot's license with the hopes to fly for the airlines one day in the future. I am also working on building automated trading bots to trade longs and shorts of BTC, as well as a platform to predict and make scores on the US economy and the future of it.</p>
   </div>
 </section>
 
@@ -593,11 +609,11 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
           <div class="social-handle">@thetrudrewwilson</div>
         </div>
       </a>
-      <a href="https://unsplash.com/@drewwilson2022" target="_blank" class="social-link">
-        <div class="contact-icon">UN</div>
+      <a href="https://github.com/DrewWilson04" target="_blank" class="social-link">
+        <div class="contact-icon">GH</div>
         <div>
-          <div class="social-name">Unsplash</div>
-          <div class="social-handle">@drewwilson2022</div>
+          <div class="social-name">GitHub</div>
+          <div class="social-handle">@DrewWilson04</div>
         </div>
       </a>
     </div>
@@ -704,6 +720,7 @@ var locations = [
   { lat: 40.4,  lng: -82.8,   label: 'Ohio' },
   { lat: 44.1,  lng: -120.5,  label: 'Oregon' },
   { lat: 40.6,  lng: -77.2,   label: 'Pennsylvania' },
+  { lat: 33.8,  lng: -80.9,   label: 'South Carolina' },
   { lat: 35.9,  lng: -86.4,   label: 'Tennessee' },
   { lat: 31.5,  lng: -99.3,   label: 'Texas' },
   { lat: 39.3,  lng: -111.1,  label: 'Utah' },
@@ -728,9 +745,8 @@ var map = L.map('leafletMap', {
   zoomControl: true
 });
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-  subdomains: 'abcd',
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19
 }).addTo(map);
 
