@@ -431,14 +431,14 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
     <div class="hero-text">
       <div class="hero-greeting">Hello, I'm</div>
       <h1 class="hero-name">Drew<span>Wilson</span></h1>
-      <p class="hero-bio">22 year old based in Tipp City, Ohio.</p>
+      <p class="hero-bio"><span class="age">22</span> year old based in Tipp City, Ohio.</p>
       <div class="hero-stats">
         <div class="stat">
           <div class="stat-number">30+</div>
           <div class="stat-label">Countries Visited</div>
         </div>
         <div class="stat">
-          <div class="stat-number">22</div>
+          <div class="stat-number age">22</div>
           <div class="stat-label">Years Old</div>
         </div>
       </div>
@@ -455,7 +455,7 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
   </div>
   <div class="about-grid">
     <div class="about-text fade-in">
-      <p>I'm Drew Wilson, born and raised in Ohio. At 22, I've traveled to over 30 countries across both of the Americas, Caribbean, and Europe. I have seven years experience with OutShine Window Cleaning and have skills in construction as well. I enjoy watching College Football, Formula 1 and playing golf.</p>
+      <p>I'm Drew Wilson, born and raised in Ohio. At <span class="age">22</span>, I've traveled to over 30 countries across both of the Americas, Caribbean, and Europe. I have seven years experience with OutShine Window Cleaning and have skills in construction as well. I enjoy watching College Football, Baseball, Formula 1 and playing golf. My teams are Ohio State, the Red Sox, and Ferrari.</p>
     </div>
     <div class="about-details fade-in">
       <div class="about-detail">
@@ -464,7 +464,7 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
       </div>
       <div class="about-detail">
         <div class="about-detail-label">Age</div>
-        <div class="about-detail-value">22 Years Old</div>
+        <div class="about-detail-value"><span class="age">22</span> Years Old</div>
       </div>
     </div>
   </div>
@@ -652,12 +652,19 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
 </section>
 
 <footer>
-  <p>&copy; 2026 Drew Wilson. All rights reserved.</p>
+  <p>&copy; <span id="footerYear">2026</span> Drew Wilson. All rights reserved.</p>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <script>
+// AGE (birthday: February 24, 2004) & FOOTER YEAR
+var today = new Date();
+var age = today.getFullYear() - 2004;
+if (today.getMonth() < 1 || (today.getMonth() === 1 && today.getDate() < 24)) age--;
+document.querySelectorAll('.age').forEach(function(el) { el.textContent = age; });
+document.getElementById('footerYear').textContent = today.getFullYear();
+
 // NAV SCROLL
 window.addEventListener('scroll', function() {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
