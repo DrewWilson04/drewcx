@@ -494,7 +494,7 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
     <div id="leafletMap"></div>
     <div class="travel-toggle-group">
       <button class="travel-toggle active" onclick="showTravelTab('countries', this)">Countries</button>
-      <button class="travel-toggle" onclick="showTravelTab('states', this)">US States</button>
+      <button class="travel-toggle" onclick="showTravelTab('states', this)">US States & Territories</button>
     </div>
     <div class="travel-tab active" id="travel-countries">
       <div class="country-count">
@@ -504,7 +504,7 @@ section, #photography, #travel { padding: 3rem 1.5rem; }
     </div>
     <div class="travel-tab" id="travel-states">
       <div class="country-count">
-        <span id="stateCount"></span> US states visited, plus D.C.
+        <span id="stateCount"></span> US states & territories visited
       </div>
       <div class="travel-list" id="stateList"></div>
     </div>
@@ -694,7 +694,7 @@ var visitedStates = [
   'Alabama', 'Alaska', 'Arizona', 'Connecticut', 'Florida',
   'Georgia', 'Illinois', 'Indiana', 'Kentucky', 'Maryland',
   'Massachusetts', 'Michigan', 'Minnesota', 'Nevada', 'New Jersey',
-  'New York', 'Ohio', 'Oregon', 'Pennsylvania', 'South Carolina',
+  'New York', 'North Carolina', 'Ohio', 'Oregon', 'Pennsylvania', 'South Carolina',
   'Tennessee', 'Texas', 'Utah', 'Virginia', 'Washington',
   'West Virginia', 'Wisconsin'
 ];
@@ -709,8 +709,9 @@ function renderTags(listId, items) {
   });
 }
 renderTags('travelList', visitedCountries);
-renderTags('stateList', visitedStates.concat(['Washington D.C.']));
-document.getElementById('stateCount').textContent = visitedStates.length;
+var visitedUsPlaces = visitedStates.concat(['Washington D.C.', 'Puerto Rico', 'U.S. Virgin Islands']);
+renderTags('stateList', visitedUsPlaces);
+document.getElementById('stateCount').textContent = visitedUsPlaces.length;
 
 function showTravelTab(tab, btn) {
   document.querySelectorAll('.travel-tab').forEach(function(t) { t.classList.remove('active'); });
@@ -770,6 +771,7 @@ var locations = [
   { lat: 39.5,  lng: -116.4,  label: 'Nevada' },
   { lat: 40.1,  lng: -74.4,   label: 'New Jersey' },
   { lat: 43.0,  lng: -75.5,   label: 'New York' },
+  { lat: 35.6,  lng: -79.4,   label: 'North Carolina' },
   { lat: 40.4,  lng: -82.8,   label: 'Ohio' },
   { lat: 44.1,  lng: -120.5,  label: 'Oregon' },
   { lat: 40.6,  lng: -77.2,   label: 'Pennsylvania' },
