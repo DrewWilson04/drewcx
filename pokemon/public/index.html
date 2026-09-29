@@ -19,7 +19,7 @@
     <nav class="tabs" role="tablist">
       <button role="tab" data-view="map" aria-selected="true">Map</button>
       <button role="tab" data-view="list">List</button>
-      <button role="tab" data-view="feed">Feed</button>
+      <button role="tab" data-view="drops">Drops</button>
     </nav>
   </header>
 
@@ -31,10 +31,8 @@
       <label class="check"><input type="checkbox" id="filter-recent-stock"> In stock in the last 3 days</label>
     </section>
     <section>
-      <h2>Feed</h2>
-      <button class="link" data-feed="tweets">Recent tweets</button>
-      <button class="link" data-feed="online">Online drop tweets only</button>
-      <button class="link" data-feed="events">Upcoming online restocks</button>
+      <h2>Online</h2>
+      <button class="link" id="drops-link">Upcoming online restocks</button>
     </section>
     <section>
       <button class="primary wide" id="add-store-btn">+ Add store</button>
@@ -73,13 +71,9 @@
       <ul id="store-list" class="cards"></ul>
     </section>
 
-    <section id="view-feed" class="view" hidden>
-      <div class="toolbar segmented" role="tablist">
-        <button data-feed="tweets" aria-selected="true">All tweets</button>
-        <button data-feed="online">Online drops</button>
-        <button data-feed="events">Upcoming</button>
-      </div>
-      <ul id="feed-list" class="cards"></ul>
+    <section id="view-drops" class="view" hidden>
+      <div class="toolbar"><h2>Upcoming online restocks</h2></div>
+      <ul id="drops-list" class="cards"></ul>
     </section>
   </main>
 

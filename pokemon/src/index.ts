@@ -1,5 +1,4 @@
-// Worker entry: password gate in front of everything, a small JSON API over D1,
-// and a cron handler that refreshes the X feed.
+// Worker entry: password gate in front of everything and a small JSON API over D1.
 
 import {
   COOKIE_NAME,
@@ -11,7 +10,6 @@ import {
   verifySession,
 } from "./auth.ts";
 import { geocodeUS } from "./geocode.ts";
-import { pullXFeed } from "./x.ts";
 
 export interface Env {
   DB: D1Database;
@@ -19,8 +17,6 @@ export interface Env {
   SITE_PASSWORD_HASH: string;
   SESSION_SECRET: string;
   SESSION_DAYS?: string;
-  X_BEARER_TOKEN?: string;
-  X_ACCOUNTS?: string;
 }
 
 // Paths reachable without logging in.
@@ -230,14 +226,6 @@ async function api(req: Request, env: Env, path: string): Promise<Response> {
     return json({ ok: true });
   }
 
-  if (path === "/api/tweets" && m === "GET") {
-    const online = new URL(req.url).searchParams.get("online") === "1";
-    const { results } = await env.DB.prepare(
-      `SELECT * FROM tweets ${online ? "WHERE is_online = 1" : ""} ORDER BY posted_at DESC LIMIT 100`,
-    ).all();
-    return json(results);
-  }
-
   if (path === "/api/events" && m === "GET") {
     // Keep events visible for a couple of hours after they start: drops run long.
     const since = new Date(Date.now() - 2 * 3600_000).toISOString();
@@ -309,8 +297,5 @@ async function handle(req: Request, env: Env): Promise<Response> {
 export default {
   async fetch(req, env): Promise<Response> {
     return withHeaders(await handle(req, env));
-  },
-  async scheduled(_event, env, ctx): Promise<void> {
-    ctx.waitUntil(pullXFeed(env));
   },
 } satisfies ExportedHandler<Env>;
