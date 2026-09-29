@@ -3,10 +3,10 @@
 import {
   COOKIE_NAME,
   clearCookie,
+  checkPassword,
   createSession,
   readCookie,
   sessionCookie,
-  verifyPassword,
   verifySession,
 } from "./auth.ts";
 import { geocodeUS } from "./geocode.ts";
@@ -14,8 +14,6 @@ import { geocodeUS } from "./geocode.ts";
 export interface Env {
   DB: D1Database;
   ASSETS: Fetcher;
-  SITE_PASSWORD_HASH: string;
-  SESSION_SECRET: string;
   SESSION_DAYS?: string;
 }
 
@@ -105,13 +103,13 @@ async function login(req: Request, env: Env): Promise<Response> {
 
   const form = await req.formData();
   const password = String(form.get("password") ?? "");
-  if (!env.SITE_PASSWORD_HASH || !(await verifyPassword(password, env.SITE_PASSWORD_HASH))) {
+  if (!checkPassword(password)) {
     await env.DB.prepare("INSERT INTO login_failures (ip, at) VALUES (?, ?)").bind(ip, now).run();
     return Response.redirect(new URL("/login?error=1", req.url).toString(), 303);
   }
 
   const days = Number(env.SESSION_DAYS ?? 30);
-  const session = await createSession(env.SESSION_SECRET, env.SITE_PASSWORD_HASH, days);
+  const session = await createSession(days);
   return new Response(null, { status: 303, headers: { Location: "/", "Set-Cookie": sessionCookie(session, days) } });
 }
 
@@ -273,7 +271,7 @@ async function handle(req: Request, env: Env): Promise<Response> {
   }
   if (PUBLIC_PATHS.has(pathname)) return env.ASSETS.fetch(req);
 
-  const authed = await verifySession(readCookie(req, COOKIE_NAME), env.SESSION_SECRET, env.SITE_PASSWORD_HASH);
+  const authed = await verifySession(readCookie(req, COOKIE_NAME));
   if (!authed) {
     if (pathname.startsWith("/api/")) return json({ error: "Login required" }, 401);
     return Response.redirect(new URL("/login", req.url).toString(), 302);

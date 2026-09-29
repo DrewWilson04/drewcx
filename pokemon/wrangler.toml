@@ -23,7 +23,3 @@ migrations_dir = "migrations"
 [vars]
 # How long a login lasts, in days.
 SESSION_DAYS = "30"
-
-# Secrets (set with `wrangler secret put NAME`, never committed):
-#   SITE_PASSWORD_HASH  output of `npm run hash-password`
-#   SESSION_SECRET      any long random string (e.g. `openssl rand -hex 32`)

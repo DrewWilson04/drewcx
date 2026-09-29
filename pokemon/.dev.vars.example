@@ -1,3 +1,0 @@
-# Copy to .dev.vars for `npm run dev`. Fill SITE_PASSWORD_HASH from `npm run -s hash-password -- pikachu`.
-SITE_PASSWORD_HASH=
-SESSION_SECRET=dev-only-not-secret

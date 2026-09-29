@@ -11,7 +11,7 @@ A private map of local stores where the group logs Pokemon card restocks, plus a
 | Frontend | **Plain HTML/CSS/JS modules**, no build step | Nothing to upgrade and nothing to compile. |
 | Map | **Leaflet** (vendored in `public/vendor/`) + OpenStreetMap tiles | Free, and no API key. |
 | Geocoding | **US Census geocoder** | Free, no key, USA only. If an address doesn't match, you tap the map to place the pin. |
-| Auth | Shared password → PBKDF2 hash in a secret → HMAC-signed cookie | No accounts and no stored credentials. Changing the password logs everyone out. |
+| Auth | One shared password hardcoded in `src/auth.ts` → signed cookie | No accounts, no secrets to manage. The check runs in the Worker, never in the browser. |
 
 ### How the password gate works
 
@@ -30,10 +30,9 @@ A private map of local stores where the group logs Pokemon card restocks, plus a
 pokemon/
 ├── wrangler.toml            Worker config: domain, assets, D1 binding, vars
 ├── migrations/            D1 schema (stores, visits, events, login_failures)
-├── scripts/hash-password.mjs  Prints the SITE_PASSWORD_HASH value for a password
 ├── src/
 │   ├── index.ts             Router: password gate, JSON API
-│   ├── auth.ts              PBKDF2 password check + signed session cookie
+│   ├── auth.ts              Hardcoded password (SITE_PASSWORD) + signed session cookie
 │   ├── geocode.ts           US Census geocoder
 │   └── *.test.ts            node:test unit tests
 └── public/                  Static site (served only after login)
@@ -79,11 +78,7 @@ npx wrangler login
 npx wrangler d1 create pokemon-restock      # copy the database_id into wrangler.toml
 npm run db:migrate:remote
 
-# 2. Secrets
-npm run -s hash-password -- 'your shared password' | npx wrangler secret put SITE_PASSWORD_HASH
-openssl rand -hex 32 | npx wrangler secret put SESSION_SECRET
-
-# 3. Deploy
+# 2. Deploy
 npm run deploy
 ```
 
@@ -96,8 +91,6 @@ The main drew.cx site on GitHub Pages is unaffected. The repo-root `_config.yml`
 ## Local development
 
 ```sh
-cp .dev.vars.example .dev.vars
-npm run -s hash-password -- pikachu          # paste into SITE_PASSWORD_HASH in .dev.vars
 npm run db:migrate:local
 npm run dev                                  # http://localhost:8787
 npm test && npm run typecheck
@@ -105,6 +98,6 @@ npm test && npm run typecheck
 
 ## Maintenance
 
-- **Password change:** rerun the hash-password step and `wrangler secret put SITE_PASSWORD_HASH`. Everyone gets logged out.
-- **Schema change:** add `migrations/0002_*.sql`, then run `npm run db:migrate:remote`.
+- **Password change:** edit `SITE_PASSWORD` in `src/auth.ts` and redeploy. Everyone gets logged out.
+- **Schema change:** add the next `migrations/000N_*.sql`, then run `npm run db:migrate:remote`.
 - **Backups:** `npx wrangler d1 export pokemon-restock --remote --output backup.sql`
