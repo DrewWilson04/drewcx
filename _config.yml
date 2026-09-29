@@ -1,0 +1,5 @@
+# GitHub Pages (Jekyll) settings for drew.cx.
+# pokemon/ is a separate Cloudflare Worker app served at pokemon.drew.cx behind
+# a password; keep its source off the public drew.cx site.
+exclude:
+  - pokemon
