@@ -2,7 +2,7 @@ import { api } from "./api.js";
 import { esc, fmtDateTime, freshness, toLocalInput } from "./util.js";
 import * as mapView from "./map.js";
 import { renderList } from "./list.js";
-import { renderFeed } from "./feed.js";
+import { renderDrops } from "./drops.js";
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => [...document.querySelectorAll(sel)];
@@ -10,7 +10,6 @@ const $$ = (sel) => [...document.querySelectorAll(sel)];
 const state = {
   stores: [],
   view: "map",
-  feedMode: "tweets",
   search: "",
   chains: new Set(), // empty = all chains
   recentStock: false,
@@ -85,17 +84,11 @@ function upsertStore(store) {
 
 function setView(view) {
   state.view = view;
-  for (const v of ["map", "list", "feed"]) $(`#view-${v}`).hidden = v !== view;
+  for (const v of ["map", "list", "drops"]) $(`#view-${v}`).hidden = v !== view;
   $$(".tabs [data-view]").forEach((b) => b.setAttribute("aria-selected", b.dataset.view === view));
   storage.set("view", view);
   if (view === "map") mapView.invalidate();
-  if (view === "feed") renderFeed($("#feed-list"), state.feedMode);
-}
-
-function setFeedMode(mode) {
-  state.feedMode = mode;
-  $$("#view-feed [data-feed]").forEach((b) => b.setAttribute("aria-selected", b.dataset.feed === mode));
-  setView("feed");
+  if (view === "drops") renderDrops($("#drops-list"));
 }
 
 function toggleDrawer(open = $("#drawer").hidden) {
@@ -232,7 +225,7 @@ async function saveEvent(form) {
   try {
     await api("/api/events", { method: "POST", body: { ...data, starts_at: new Date(data.starts_at).toISOString() } });
     $("#event-dialog").close();
-    setFeedMode("events");
+    setView("drops");
     toast("Restock added");
   } catch (err) {
     showError(form, err.message);
@@ -240,7 +233,7 @@ async function saveEvent(form) {
 }
 
 // ---------------------------------------------------------------------------
-// Actions from popups, list cards, history and feed
+// Actions from popups, list cards, history and drops
 
 async function onAction(action, id, btn) {
   switch (action) {
@@ -261,7 +254,7 @@ async function onAction(action, id, btn) {
     case "delete-event":
       if (!confirm("Remove this restock?")) return;
       await api(`/api/events/${id}`, { method: "DELETE" });
-      return renderFeed($("#feed-list"), "events");
+      return renderDrops($("#drops-list"));
   }
 }
 
@@ -295,7 +288,7 @@ function locate({ quiet = false } = {}) {
 
 mapView.initMap($("#map"), (action, id) => onAction(action, id).catch((err) => toast(err.message)));
 delegate($("#store-list"));
-delegate($("#feed-list"));
+delegate($("#drops-list"));
 delegate($("#history-list"));
 
 $("#menu-btn").addEventListener("click", () => toggleDrawer());
@@ -303,12 +296,10 @@ $("#scrim").addEventListener("click", () => toggleDrawer(false));
 document.addEventListener("keydown", (e) => e.key === "Escape" && toggleDrawer(false));
 
 $$(".tabs [data-view]").forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
-$$("[data-feed]").forEach((b) =>
-  b.addEventListener("click", () => {
-    setFeedMode(b.dataset.feed);
-    toggleDrawer(false);
-  }),
-);
+$("#drops-link").addEventListener("click", () => {
+  setView("drops");
+  toggleDrawer(false);
+});
 
 $("#store-search").addEventListener("input", (e) => {
   state.search = e.target.value;
@@ -355,7 +346,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") loadStores().catch(() => {});
 });
 
-setView(["map", "list", "feed"].includes(storage.get("view")) ? storage.get("view") : "map");
+setView(["map", "list", "drops"].includes(storage.get("view")) ? storage.get("view") : "map");
 loadStores()
   .then(() => {
     mapView.fitStores(state.stores);
