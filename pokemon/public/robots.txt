@@ -1,0 +1,3 @@
+# Private site. No crawling of any kind.
+User-agent: *
+Disallow: /

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow">
+  <title>Restock Tracker</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="login-page">
+  <form class="login-card" method="post" action="/api/login">
+    <h1>Restock Tracker</h1>
+    <p class="muted">Enter the group password.</p>
+    <p class="error" id="error" hidden></p>
+    <input type="password" name="password" autocomplete="current-password" placeholder="Password" required autofocus>
+    <button type="submit" class="primary">Enter</button>
+  </form>
+  <script src="/login.js"></script>
+</body>
+</html>

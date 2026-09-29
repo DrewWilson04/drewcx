@@ -1,0 +1,37 @@
+# Cloudflare Worker + static assets + D1. One deploy, free tier.
+name = "pokemon-restock"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# Serve pokemon.drew.cx from this Worker. Requires drew.cx to be a zone on
+# your Cloudflare account; otherwise remove this block and add the custom
+# domain in the dashboard (Workers > Settings > Domains & Routes).
+routes = [{ pattern = "pokemon.drew.cx", custom_domain = true }]
+
+# Static files in public/. run_worker_first means every request (HTML, JS,
+# CSS included) passes through the password gate in src/index.ts first.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pokemon-restock"
+database_id = "00000000-0000-0000-0000-000000000000" # REPLACE with id from `wrangler d1 create pokemon-restock`
+migrations_dir = "migrations"
+
+# Pull the X feed every 15 minutes.
+[triggers]
+crons = ["*/15 * * * *"]
+
+[vars]
+# Comma-separated X handles (no @) to pull restock alerts from.
+X_ACCOUNTS = ""   # e.g. "handle_one,handle_two"
+# How long a login lasts, in days.
+SESSION_DAYS = "30"
+
+# Secrets (set with `wrangler secret put NAME`, never committed):
+#   SITE_PASSWORD_HASH  output of `npm run hash-password`
+#   SESSION_SECRET      any long random string (e.g. `openssl rand -hex 32`)
+#   X_BEARER_TOKEN      X API v2 bearer token (optional; feed stays empty without it)

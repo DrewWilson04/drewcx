@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow">
+  <title>Restock Tracker</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="drawer">
+      <span class="burger"></span>
+    </button>
+    <h1>Restock Tracker</h1>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-view="map" aria-selected="true">Map</button>
+      <button role="tab" data-view="list">List</button>
+      <button role="tab" data-view="feed">Feed</button>
+    </nav>
+  </header>
+
+  <aside class="drawer" id="drawer" hidden>
+    <section>
+      <h2>Stores</h2>
+      <input type="search" id="store-search" placeholder="Search name or address">
+      <div id="chain-filters" class="chips"></div>
+      <label class="check"><input type="checkbox" id="filter-recent-stock"> In stock in the last 3 days</label>
+    </section>
+    <section>
+      <h2>Feed</h2>
+      <button class="link" data-feed="tweets">Recent tweets</button>
+      <button class="link" data-feed="online">Online drop tweets only</button>
+      <button class="link" data-feed="events">Upcoming online restocks</button>
+    </section>
+    <section>
+      <button class="primary wide" id="add-store-btn">+ Add store</button>
+      <button class="wide" id="add-event-btn">+ Add online restock</button>
+    </section>
+    <section class="drawer-foot">
+      <label>Your nickname <input id="nickname" maxlength="40" placeholder="Shown on visits you log"></label>
+      <form method="post" action="/api/logout"><button class="link">Log out</button></form>
+    </section>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main>
+    <section id="view-map" class="view">
+      <div id="map"></div>
+      <button class="fab" id="locate-btn" title="Center on me" aria-label="Center on my location">&#x2316;</button>
+      <div class="legend">
+        <span><i class="dot fresh"></i>Stock &lt;3d</span>
+        <span><i class="dot visited"></i>Checked &lt;3d</span>
+        <span><i class="dot stale"></i>Older</span>
+      </div>
+    </section>
+
+    <section id="view-list" class="view" hidden>
+      <div class="toolbar">
+        <label>Sort
+          <select id="sort">
+            <option value="distance">Nearest</option>
+            <option value="stock">Most recent stock</option>
+            <option value="visit">Most recent visit</option>
+            <option value="name">Name</option>
+          </select>
+        </label>
+        <span class="muted" id="list-count"></span>
+      </div>
+      <ul id="store-list" class="cards"></ul>
+    </section>
+
+    <section id="view-feed" class="view" hidden>
+      <div class="toolbar segmented" role="tablist">
+        <button data-feed="tweets" aria-selected="true">All tweets</button>
+        <button data-feed="online">Online drops</button>
+        <button data-feed="events">Upcoming</button>
+      </div>
+      <ul id="feed-list" class="cards"></ul>
+    </section>
+  </main>
+
+  <!-- Add / edit store -->
+  <dialog id="store-dialog">
+    <form method="dialog" id="store-form">
+      <h2 id="store-dialog-title">Add store</h2>
+      <label>Name <input name="name" required maxlength="120" placeholder="Target - Main St"></label>
+      <label>Chain
+        <input name="chain" list="chains" maxlength="60" placeholder="Target">
+        <datalist id="chains">
+          <option>Target</option><option>Walmart</option><option>Dollar General</option>
+          <option>Five Below</option><option>GameStop</option><option>Best Buy</option>
+          <option>Walgreens</option><option>CVS</option><option>Barnes &amp; Noble</option>
+          <option>Costco</option><option>Sam's Club</option><option>Meijer</option>
+        </datalist>
+      </label>
+      <label>Address <input name="address" required maxlength="300" placeholder="123 Main St, Springfield, IL 62701"></label>
+      <label>Restock notes <textarea name="restock_notes" rows="3" placeholder="Vendor restocks Tue/Thu before open…"></textarea></label>
+      <p class="muted small">Pin location comes from the address. If it can't be found you'll be asked to tap the map.</p>
+      <p class="error" data-error hidden></p>
+      <menu>
+        <button type="button" data-close>Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <!-- Log a visit -->
+  <dialog id="visit-dialog">
+    <form method="dialog" id="visit-form">
+      <h2>Log visit <small id="visit-store-name" class="muted"></small></h2>
+      <label>When <input type="datetime-local" name="visited_at" required></label>
+      <label class="check"><input type="checkbox" name="confirmed" checked> I checked the Pokemon shelf</label>
+      <label class="check"><input type="checkbox" name="in_stock"> There was product</label>
+      <label>What was there / what you bought <input name="products" maxlength="500" placeholder="3x Surging Sparks booster bundle, no ETBs"></label>
+      <label>Notes <textarea name="notes" rows="2" maxlength="1000" placeholder="Employee said next truck is Thursday"></textarea></label>
+      <p class="error" data-error hidden></p>
+      <menu>
+        <button type="button" data-close>Cancel</button>
+        <button type="submit" class="primary">Log visit</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <!-- Store history -->
+  <dialog id="history-dialog">
+    <div class="dialog-body">
+      <h2 id="history-title"></h2>
+      <ul id="history-list" class="history"></ul>
+      <menu><button type="button" data-close>Close</button></menu>
+    </div>
+  </dialog>
+
+  <!-- Add online restock event -->
+  <dialog id="event-dialog">
+    <form method="dialog" id="event-form">
+      <h2>Upcoming online restock</h2>
+      <label>What <input name="title" required maxlength="200" placeholder="Pokemon Center ETB restock"></label>
+      <label>Retailer <input name="retailer" maxlength="80" placeholder="Pokemon Center"></label>
+      <label>Starts <input type="datetime-local" name="starts_at" required></label>
+      <label>Link <input type="url" name="url" maxlength="500" placeholder="https://"></label>
+      <label>Notes <textarea name="notes" rows="2" maxlength="1000"></textarea></label>
+      <p class="error" data-error hidden></p>
+      <menu>
+        <button type="button" data-close>Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="/vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
